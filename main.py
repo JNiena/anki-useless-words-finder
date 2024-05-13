@@ -17,6 +17,12 @@ def invoke(action, **params):
 		raise Exception(response["error"])
 	return response["result"]
 
+def tag_note(id, tags):
+	invoke("updateNote", note = {
+		"id": id,
+		"tags": tags
+	})
+
 def find_unknown_kanjis(file_name):
 	unknown_kanjis = []
 	with open(file_name) as file:
@@ -39,16 +45,10 @@ def main(deck_name, word_field, kanji_grid_path):
 	for i in range(0, len(notes)):
 		word = notes[i]["fields"][word_field]["value"]
 		if is_useless_word(word, unknown_kanjis):
-			invoke("updateNote", note = {
-				"id": notes[i]["noteId"],
-				"tags": ["useless"]
-			})
+			tag_note(notes[i]["noteId"], ["useless"])
 		else:
-			invoke("updateNote", note = {
-				"id": notes[i]["noteId"],
-				"tags": ["useful"]
-			})
-		print("{}/{} - {}".format(i, len(notes), word))
+			tag_note(notes[i]["noteId"], ["useful"])
+		print("{}/{} - {}".format(i + 1, len(notes), word))
 
 #################################
 ######### Settings ##############
