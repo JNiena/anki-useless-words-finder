@@ -40,7 +40,7 @@ def is_useless_word(word, unknown_kanjis):
 
 def main(deck_name, word_field, kanji_grid_path):
 	unknown_kanjis = find_unknown_kanjis(kanji_grid_path)
-	note_ids = invoke("findNotes", query = "deck:{} is:new".format(deck_name))
+	note_ids = invoke("findNotes", query = "deck:\"{}\" is:new".format(deck_name))
 	notes = invoke("notesInfo", notes = note_ids)
 	for i in range(0, len(notes)):
 		word = notes[i]["fields"][word_field]["value"]
@@ -50,9 +50,9 @@ def main(deck_name, word_field, kanji_grid_path):
 			tag_note(notes[i]["noteId"], ["useful"])
 		print("{}/{} - {}".format(i + 1, len(notes), word))
 
-#################################
-######### Settings ##############
-#################################
+############################
+######### Settings #########
+############################
 
 # The name of the deck to query.
 deck_name = "日本語"
